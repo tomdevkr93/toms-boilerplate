@@ -1,0 +1,14 @@
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  --orange: rgb(255, 101, 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --link-color: #ffffff;
+  }
+}
