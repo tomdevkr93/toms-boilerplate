@@ -1,3 +1,5 @@
+import { AppError } from '@/models/app-error'
+
 interface HTTPInstance {
   get<T>(url: string, config?: RequestInit): Promise<T>
   delete<T>(url: string, config?: RequestInit): Promise<T>
@@ -45,13 +47,16 @@ class Service {
       })
 
       if (!response.ok) {
-        throw new Error('Network response was not ok')
+        throw new AppError('Network response was not ok', response.status)
       }
 
       const responseData: T = await response.json()
       return responseData
     } catch (error) {
-      console.error('Error:', error)
+      if (error instanceof AppError) {
+        console.error(`🐛 [${error.status}] ${error.message}`)
+      }
+
       throw error
     }
   }
