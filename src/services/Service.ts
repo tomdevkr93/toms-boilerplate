@@ -1,4 +1,4 @@
-import { AppError } from '@/models/app-error'
+import { AppError, ErrorType } from '@/models/app-error'
 
 interface HTTPInstance {
   get<T>(url: string, config?: RequestInit): Promise<T>
@@ -47,23 +47,18 @@ class Service {
       })
 
       if (!response.ok) {
-        throw new AppError('API_ERROR', response.status)
+        throw AppError.from(response.status)
       }
 
       const responseData: T = await response.json()
       return responseData
     } catch (error) {
-      console.error(`🛑 ${error}`)
+      console.error((error as Error).message)
+      if (error instanceof AppError) throw error
 
-      if (error instanceof AppError) {
-        throw error
-      }
-
-      if (error instanceof TypeError || error instanceof DOMException) {
-        throw new AppError('NETWORK_ERROR')
-      }
-
-      throw new AppError('UNKNOWN_ERROR')
+      throw new AppError(
+        error instanceof TypeError || error instanceof DOMException ? ErrorType.NETWORK_ERROR : ErrorType.UNKNOWN_ERROR
+      )
     }
   }
 
