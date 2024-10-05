@@ -13,7 +13,7 @@ interface Address {
   street: string
   suite: string
   city: string
-  zipcode: string
+  zipCode: string
   geo: Geo
 }
 

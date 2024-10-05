@@ -47,17 +47,23 @@ class Service {
       })
 
       if (!response.ok) {
-        throw new AppError('Network response was not ok', response.status)
+        throw new AppError('API_ERROR', response.status)
       }
 
       const responseData: T = await response.json()
       return responseData
     } catch (error) {
+      console.error(`🛑 ${error}`)
+
       if (error instanceof AppError) {
-        console.error(`🐛 [${error.status}] ${error.message}`)
+        throw error
       }
 
-      throw error
+      if (error instanceof TypeError || error instanceof DOMException) {
+        throw new AppError('NETWORK_ERROR')
+      }
+
+      throw new AppError('UNKNOWN_ERROR')
     }
   }
 

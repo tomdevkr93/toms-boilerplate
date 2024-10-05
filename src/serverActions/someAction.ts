@@ -1,16 +1,28 @@
 'use server'
 
-import { BaseResponse } from '@/models/base-response'
+import { ActionResponse } from '@/models/server-action-response'
 
-export async function someAction(formData: FormData): Promise<BaseResponse> {
+interface SomeActionResult {
+  email: string
+  password: string
+}
+
+export async function someAction(formData: FormData): Promise<ActionResponse<SomeActionResult>> {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
   try {
     console.log(email, password)
-    return { status: 'success', message: '로그인 성공' }
+    return {
+      status: 'success',
+      message: '로그인 성공',
+      data: {
+        email: 'email',
+        password: 'password'
+      }
+    }
   } catch (error) {
     console.error(error)
-    return { status: 'error', message: '로그인 실패', error: '로그인 실패' }
+    return { status: 'error', message: '로그인 실패' }
   }
 }
