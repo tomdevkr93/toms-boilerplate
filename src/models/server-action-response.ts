@@ -1,9 +1,11 @@
-type ActionStatus = 'success' | 'error'
-
-export interface ActionResponse<T> {
-  status: ActionStatus
-  message: string
-  data?: T
+interface ActionSuccessResponse<T> {
+  status: 'success'
+  data: T
 }
 
-export type ActionResult<T> = Promise<ActionResponse<T>>
+interface ActionErrorResponse {
+  status: 'error'
+  message: string
+}
+
+export type ActionResponse<T> = ActionSuccessResponse<T> | ActionErrorResponse

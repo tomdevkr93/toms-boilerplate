@@ -15,7 +15,6 @@ export async function someAction(formData: FormData): Promise<ActionResponse<Som
     console.log(email, password)
     return {
       status: 'success',
-      message: '로그인 성공',
       data: {
         email: 'email',
         password: 'password'
